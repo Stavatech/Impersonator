@@ -8,8 +8,6 @@ class Process {
         this.proc = this.runCommand(command);
         return this.proc;
     }
-
-
 };
 
 module.exports = Process;
