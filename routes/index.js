@@ -1,12 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const functions = require('../utils/functions')
 
-router.get('/', function(req, res, next) {
-  res.send('In future, this endpoint will run commands');
-});
-
-router.get('/ping', function(req, res, next) {
-  res.send('This is an Impersonator service');
-});
-
-module.exports = router;
+module.exports = function(app) {
+    app.post('/', function(req, res) {
+        functions.runCommand(req, res);
+    });
+    require('./ping')(app);
+};
