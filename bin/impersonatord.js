@@ -3,8 +3,8 @@
 /**
  * Module dependencies.
  */
-const config = require('../config/config');
-const app = require('../service');
+const app = require('../src/service');
+const config = require('../src/config');
 const debug = require('debug')('impersonator:server');
 const http = require('http');
 

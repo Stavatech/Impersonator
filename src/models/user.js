@@ -1,4 +1,4 @@
-const config = require('../config/config');
+const config = require('../config');
 const auth = require('./auth')[config.auth];
 
 class User {
@@ -18,7 +18,7 @@ class User {
 
     runCommand(command, onStdOut, onStdErr, onError, onClose) {
         if (this.process === null) {
-            throw new Error("No process is available. First call login().");
+            throw new Error("No process is available. You must first call login().");
         }
 
         onStdOut = !onStdOut ? (data) => {} : onStdOut;
