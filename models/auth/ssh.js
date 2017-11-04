@@ -1,4 +1,4 @@
-const Process = require('../../models/process');
+const Process = require('../process');
 const Client = require('ssh2').Client;
 
 class SSH extends Process {
@@ -35,7 +35,6 @@ class SSH extends Process {
             success();
         });
         this.conn.on('error', (err) => {
-            console.log(err);
             error();
         });
 

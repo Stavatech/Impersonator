@@ -1,4 +1,4 @@
-const Process = require('../../models/process');
+const Process = require('../process');
 const subprocess = require('child_process');
 
 class Unauthenticated extends Process {

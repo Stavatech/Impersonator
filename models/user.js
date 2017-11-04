@@ -1,5 +1,5 @@
 const config = require('../config/config');
-const auth = require('../utils/auth')[config.auth];
+const auth = require('./auth')[config.auth];
 
 class User {
     constructor(credentials) {
