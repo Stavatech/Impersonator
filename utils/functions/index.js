@@ -1,7 +1,13 @@
 const User = require('../../models/user');
 
 const runCommand = (req, res) => {
-    let user = new User(req.body);
+    let user = global.users[req.body.token];
+
+    if (user === undefined) {
+        res.status(401);
+        res.json({errorMessage: "Unauthorized"});
+        return;
+    }
 
     let response = {
         out: '',

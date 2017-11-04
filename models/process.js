@@ -1,12 +1,34 @@
 class Process {
-    constructor(runCommand) {
-        this.runCommand = runCommand;
-        this.proc = null;
+    constructor(credentials) {
+        this.credentials = credentials;
+    }
+
+    setOnStdout(callback) {
+        this.onStdout = callback;
+    }
+
+    setOnStderr(callback) {
+        this.onStderr = callback;
+    }
+
+    setOnError(callback) {
+        this.onError = callback;
+    }
+
+    setOnClose(callback) {
+        this.onClose = callback;
     }
 
     run(command) {
-        this.proc = this.runCommand(command);
-        return this.proc;
+        throw new Error("Not implemented");
+    }
+
+    open(success, error) {
+        throw new Error("Not implemented");
+    }
+
+    close() {
+        throw new Error("Not implemented");
     }
 };
 

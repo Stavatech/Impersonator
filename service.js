@@ -11,6 +11,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+global.users = {};
+
 // routing
 require('./routes')(app);
 

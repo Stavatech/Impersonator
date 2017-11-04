@@ -1,41 +1,31 @@
 const Process = require('../../models/process');
+const subprocess = require('child_process');
 
-let subprocess = require('child_process');
+class Unauthenticated extends Process {
+    run(command) {
+        let proc = subprocess.spawn(command, { shell: true });
 
-const getProcessHandle = (creds) => {
-    return new Process(function(command) {
-        return subprocess.spawn(command, { shell: true });
-    });
-};
+        proc.stdout.on('data', (data) => {
+            this.onStdout(data.toString());
+        });
+        proc.stderr.on('data', (data) => {
+            this.onStderr(data.toString());
+        });
+        proc.on('error', (err) => {
+            this.onError(err);
+        });
+        proc.on('close', (code) => {
+            this.onClose(code);
+        });
+    }
 
-const setStdOutCallback = (proc, callback) => {
-    proc.stdout.on('data', (data) => {
-        callback(data.toString());
-    });
-};
+    open(success, error) {
+        success();
+    }
 
-const setStdErrCallback = (proc, callback) => {
-    proc.stderr.on('data', (data) => {
-        callback(data.toString());
-    });
-};
+    close() {}
+}
 
-const setErrorCallback = (proc, callback) => {
-    proc.on('error', (err) => {
-        callback(err);
-    });
-};
-
-const setCloseCallback = (proc, callback) => {
-    proc.on('close', (code) => {
-        callback(code);
-    });
-};
-
-module.exports = { 
-    getProcessHandle,
-    setStdOutCallback,
-    setStdErrCallback,
-    setErrorCallback,
-    setCloseCallback
+module.exports = {
+    Process: Unauthenticated
 };
