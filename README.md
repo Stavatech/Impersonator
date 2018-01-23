@@ -3,9 +3,14 @@ Impersonate Linux users to run a command or script
 
 ### Quickstart
 
+Install dependencies:
+```
+npm install
+```
+
 Start the Impersonator service:
 ```
-  npm start
+npm start
 ```
 
 To run commands as a user, you need to generate an access token by authenticating as the user. From another terminal, run:
