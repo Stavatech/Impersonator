@@ -1,34 +1,36 @@
-const crypto = require('crypto');
-const base64url = require('base64url');
+const helpers = require('../../helpers/token');
 
-const User = require('../../models/user');
-
-const generateToken = (size) => {
-    return base64url(crypto.randomBytes(size));
-}
-
-module.exports = (app) => {
+module.exports = (app, config, sessions) => {
+    /**
+     * Input: Receives JSON in the format: { "username": "<username>": "password": "<password>" }.
+     * Output: Returns a token that can be used to authenticate future requests
+     */
     app.post('/tokens', function(req, res) {
-        let user = new User(req.body);
-        user.login(() => {
-            let token = generateToken(64);
-            global.users[token] = user;
+        let proc = new config.Process(req.body);
+
+        loginSuccess = () => {
+            let token = helpers.generateToken(64);
+            sessions[token] = proc;
+
+            proc.ttl = req.body.ttl || config.defaultTTL;
+            proc.timeout = helpers.expireToken(sessions, token, proc.ttl);
+
             res.send(token);
-        }, () => {
+        };
+        loginError = () => {
             res.status(401);
             res.json({errorMessage: "Unauthorized"});
-        });
+        };
+
+        proc.open(loginSuccess, loginError)
     });
 
+    /**
+     * Input: The token to be deleted as a URL path param: /token/<token>.
+     * Output: n/a
+     */
     app.delete('/tokens/:token', function(req, res) {
-        const token = req.params.token;
-        const user = global.users[token];
-
-        if (user) {
-            user.logout();
-            delete global.users[token];
-        }
-
+        helpers.clearToken(sessions, req.params.token);
         res.end();
     });
 };
