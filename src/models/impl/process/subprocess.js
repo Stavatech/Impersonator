@@ -6,10 +6,10 @@ class Subprocess extends Process {
         let proc = subprocess.spawn(task.command, { shell: true });
 
         proc.stdout.on('data', (data) => {
-            task.onStdout(data.toString());
+            task.onStdOut(data.toString());
         });
         proc.stderr.on('data', (data) => {
-            task.onStderr(data.toString());
+            task.onStdErr(data.toString());
         });
         proc.on('error', (err) => {
             task.onError(err);
