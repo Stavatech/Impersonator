@@ -5,6 +5,8 @@ module.exports = function(app, config, sessions) {
      * Output: A vaguely descriptive message.
      */
     app.get('/ping', function(req, res) {
+        throw new Error("test exception");
+        
         res.set('Content-Type', 'text/plain');
 
         let tokens = Object.keys(sessions);

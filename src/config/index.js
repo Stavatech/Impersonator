@@ -1,11 +1,19 @@
+let path = require('path');
+
+let logDirectory = path.join(__dirname, 'logs');
+
 let config = {
     port: 31000,
-    process: 'ssh',
-    defaultTTL: 604800
+    defaultTTL: 604800,
+    logging: {
+        path: logDirectory
+    },
+    process: 'ssh'
 };
 
 module.exports = {
     port: config.port,
     defaultTTL: config.defaultTTL,
-    Process: require('../models/impl/process/' + config.process).Process,
+    logging: config.logging,
+    Process: require('../models/impl/process/' + config.process).Process
 };

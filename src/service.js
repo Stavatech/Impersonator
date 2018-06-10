@@ -1,21 +1,26 @@
-let express = require('express');
-let path = require('path');
-let logger = require('morgan');
-let cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
-let config = require('./config');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const config = require('./config');
+const {logger, configureAccessLogs, configureErrorLogs} = require('./helpers/logging');
 
 let app = express();
+let sessions = {};
 
-app.use(logger('dev'));
+// set up access logs
+configureAccessLogs(app);
+
+// set up other middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-let sessions = {};
-
 // routing
 require('./routes')(app, config, sessions);
+
+// set up error logs
+configureErrorLogs(app);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -26,6 +31,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+    logger.error("Error happened");
     res.status(err.status || 500);
     res.send(err.message);
 });
