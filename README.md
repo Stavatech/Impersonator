@@ -1,5 +1,5 @@
-# Impersonator
-Impersonate Linux users to run a command or script
+# Impersonator Service
+Provides HTTP APIs to run commands as a given user over an SSH connection.
 
 ### Quickstart
 
